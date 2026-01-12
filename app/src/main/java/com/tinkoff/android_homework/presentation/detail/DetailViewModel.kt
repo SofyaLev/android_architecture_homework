@@ -3,7 +3,7 @@ package com.tinkoff.android_homework.presentation.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tinkoff.android_homework.data.network.repo.detail.SubscribeDetailRepositoryImpl
+import com.tinkoff.android_homework.domain.main.usecases.SubscribeDetailUseCase
 import com.tinkoff.android_homework.presentation.model.DetailItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,18 +17,15 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val detailRepository: SubscribeDetailRepositoryImpl
+    private val subscribeDetailUseCase: SubscribeDetailUseCase
 ) : ViewModel() {
 
     private val _details: MutableStateFlow<DetailItem?> = MutableStateFlow(null)
     val details: StateFlow<DetailItem?> = _details.asStateFlow()
 
-    //TODO нужно создать юзкейс SubscribeDetailUseCase
-    // и заменить на него вызов метода интерфейса репозитория
-
     init {
         viewModelScope.launch {
-            val detail = detailRepository.getDetail(0)
+            val detail = subscribeDetailUseCase.getDetail(0)
             Log.e("TAGRTRT", "detail :${detail}")
         }
     }
