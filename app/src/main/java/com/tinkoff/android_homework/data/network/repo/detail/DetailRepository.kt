@@ -11,18 +11,18 @@ import javax.inject.Inject
 /**
  * @author d.shtaynmets
  */
-//TODO нужно, чтобы SubscribeDetailRepositoryImpl
-// имплементировал интерфейс репозитория с методом getDetail
-// поэтому его нужно создать
-// Можно написать его выше в этом же файле
+interface DetailRepository {
+    suspend fun getDetail(id: Int): Detail
+}
+
 class SubscribeDetailRepositoryImpl @Inject constructor(
     private val detailService: DetailService,
     private val detailDao: DetailDao,
     private val detailApiToDbMapper: DetailApiToDbMapper,
     private val detailDbToDomainMapper: DetailDbToDomainMapper,
     private val internetChecker: InternetChecker,
-) {
-    suspend fun getDetail(id: Int): Detail {
+): DetailRepository {
+    override suspend fun getDetail(id: Int): Detail {
         if (internetChecker.isInternetAvailable()) {
             val detailApi = detailService.getDetail(id)
             detailDao.insertAll(detailApiToDbMapper.invoke(detailApi))
