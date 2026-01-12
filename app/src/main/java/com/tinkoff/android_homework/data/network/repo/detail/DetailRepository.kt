@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * @author d.shtaynmets
  */
-interface DetailRepository {
+interface SubscribeDetailRepository {
     suspend fun getDetail(id: Int): Detail
 }
 
@@ -21,7 +21,7 @@ class SubscribeDetailRepositoryImpl @Inject constructor(
     private val detailApiToDbMapper: DetailApiToDbMapper,
     private val detailDbToDomainMapper: DetailDbToDomainMapper,
     private val internetChecker: InternetChecker,
-): DetailRepository {
+): SubscribeDetailRepository {
     override suspend fun getDetail(id: Int): Detail {
         if (internetChecker.isInternetAvailable()) {
             val detailApi = detailService.getDetail(id)
